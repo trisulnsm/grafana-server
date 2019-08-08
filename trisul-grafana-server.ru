@@ -78,7 +78,7 @@ class CounterItemRequest
   end
 end
 
-class HelloWorld
+class TrisulGrafana
 
   def initialize(zmq_endpoint)
     @zmq_endpoint=zmq_endpoint
@@ -114,4 +114,4 @@ trp_server_socket = resp.endpoints_query.first
 print("Connecting to TRP Server at ZMQ #{trp_server_socket}")
 
 # start server 
-run HelloWorld.new(trp_server_socket)
+run TrisulGrafana.new(trp_server_socket)
