@@ -23,7 +23,7 @@ Restart grafana-server
 
 This is the small rack server to drive the Grafana JSON query interface.
 
-1. Copy the file `grafana-server.ru` to the Web Trisul server. 
+1. Download and unzip the latest release from https://github.com/trisulnsm/grafana-server/releases to the Web Trisul server 
 2. Set the ruby environment on the Web Trisul server
    ````
    sudo -i 
@@ -81,7 +81,7 @@ Create a new dashboard , then start adding Trisul Metrics as shown below. Just e
 
 Here is a sample dashboard
 
-![sample](sample1.png)
+![sample](sample.png)
 
 
 
