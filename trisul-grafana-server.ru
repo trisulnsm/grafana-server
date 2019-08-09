@@ -2,12 +2,7 @@
 # to be run with rackup 
 require 'json'
 require 'trisulrp'
-
-require_relative  'query_base'
-require_relative  'query_counter_item'
-require_relative  'query_counter_topper'
-require_relative  'query_topper_history'
-
+require_relative  'queries/queries.rb'
 
 #TRISUL_DOMAIN_SOCKET="ipc:///usr/local/var/lib/trisul-probe/domain0/run/ctl_local_req"
 TRISUL_HUB="hub0"
