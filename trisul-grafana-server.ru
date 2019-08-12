@@ -3,9 +3,8 @@
 require 'json'
 require 'trisulrp'
 require_relative  'queries/queries.rb'
-require 'byebug'
 
-TRISUL_DOMAIN_SOCKET="ipc:///usr/local/var/lib/trisul-probe/domain0/run/ctl_local_req"
+TRISUL_DOMAIN_SOCKET="ipc:///usr/local/var/lib/trisul-hub/domain0/run/ctl_local_req"
 TRISUL_HUB="hub0"
 TRISUL_CONTEXT="default"
 
@@ -32,7 +31,7 @@ class TrisulGrafana
       if target_data.length > 0 and (JSON.parse(target_data) rescue nil)
         target = JSON.parse(target_data) 
         if target["find"]=="probes"
-          return_data = ConetxtConfigRequest.new(TRISUL_DOMAIN_SOCKET).get_all_probes(TRISUL_HUB,TRISUL_CONTEXT)
+          return_data = ContextConfigRequest.new(TRISUL_DOMAIN_SOCKET).get_all_probes(TRISUL_HUB,TRISUL_CONTEXT)
         end
         if target["find"]=="cgguid"
           return_data = CounterGroupInfoRequest.new(@zmq_endpoint).get_all_cgs()
@@ -72,7 +71,19 @@ req =TrisulRP::Protocol.mk_request(TRP::Message::Command::CONTEXT_CONFIG_REQUEST
           {:destination_node => TRISUL_HUB, :context_name => TRISUL_CONTEXT } )
 resp = TrisulRP::Protocol.get_response_zmq(TRISUL_DOMAIN_SOCKET,req) 
 trp_server_socket = resp.endpoints_query.first
-print("Connecting to TRP Server at ZMQ #{trp_server_socket}")
 
+puts("")
+puts("Connecting to TRP Server at ZMQ #{trp_server_socket}")
+puts("Testing the connection..")
+
+# test the connection 
+req =TrisulRP::Protocol.mk_request(TRP::Message::Command::TIMESLICES_REQUEST, 
+                                  {:context_name => TRISUL_CONTEXT, :get_total_window =>true } )
+resp = TrisulRP::Protocol.get_response_zmq(trp_server_socket,req) 
+puts("Connection successful")
+puts("Time Window at server #{Time.at(resp.total_window.from.tv_sec)} to #{Time.at(resp.total_window.to.tv_sec)}  ")
+puts(" ")
+
+#
 # start server 
 run TrisulGrafana.new(trp_server_socket)

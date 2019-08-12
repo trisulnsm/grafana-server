@@ -1,4 +1,4 @@
-class ConetxtConfigRequest
+class ContextConfigRequest
 
   def initialize(domain_endpoint)
     @domain_endpoint = domain_endpoint
