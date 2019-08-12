@@ -51,7 +51,7 @@ class TrisulGrafana
         elsif t["target"] =~ /toppers/ &&  t["type"] == "timeserie" 
           chartitems = CounterTopperHistoryRequest.new(@zmq_endpoint).do_query(query_data["range"],t["target"])
           chartitems.each { |d| query_response << d } 
-        else
+	elsif t["target"] 
           chartitems = MultipleCounterItemRequest.new(@zmq_endpoint).do_query(query_data["range"],t["target"])
           chartitems.each { |d| query_response << d } 
         end
