@@ -3,6 +3,7 @@
 require 'json'
 require 'trisulrp'
 require_relative  'queries/queries.rb'
+require 'byebug'
 
 TRISUL_DOMAIN_SOCKET="ipc:///usr/local/var/lib/trisul-probe/domain0/run/ctl_local_req"
 TRISUL_HUB="hub0"
@@ -25,7 +26,22 @@ class TrisulGrafana
     when "/"
       [200, {"Content-Type" => "text/html"}, ["Success"]]
     when /search/
-      [200, {"Content-Type" => "application/json"},  [   COMMON_METRICS.keys().collect { |k| [k] }.to_json() ]]
+      return_data = COMMON_METRICS.keys().collect { |k| [k] }
+      qp = JSON.parse(req.body.read) 
+      target_data = qp["target"]
+      if target_data.length > 0 and (JSON.parse(target_data) rescue nil)
+        target = JSON.parse(target_data) 
+        if target["find"]=="probes"
+          return_data = ConetxtConfigRequest.new(TRISUL_DOMAIN_SOCKET).get_all_probes(TRISUL_HUB,TRISUL_CONTEXT)
+        end
+        if target["find"]=="cgguid"
+          return_data = CounterGroupInfoRequest.new(@zmq_endpoint).get_all_cgs()
+        end
+        if target["find"]=="meter"
+          return_data =  CounterGroupInfoRequest.new(@zmq_endpoint).get_meters_for_cgname(target["selected_cg"])
+        end
+      end
+      [200, {"Content-Type" => "application/json"},  [  return_data.to_json() ]]
     when /query/
       query_data = JSON.parse(req.body.read)
       query_response = []
@@ -37,7 +53,8 @@ class TrisulGrafana
           chartitems = CounterTopperHistoryRequest.new(@zmq_endpoint).do_query(query_data["range"],t["target"])
           chartitems.each { |d| query_response << d } 
         else
-          query_response << CounterItemRequest.new(@zmq_endpoint).do_query(query_data["range"],t["target"])
+          chartitems = MultipleCounterItemRequest.new(@zmq_endpoint).do_query(query_data["range"],t["target"])
+          chartitems.each { |d| query_response << d } 
         end
       end
       [200, {"Content-Type" => "application/json"}, [query_response.to_json()] ]

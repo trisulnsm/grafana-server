@@ -18,6 +18,12 @@ class QueryBase
     if kparts.size != 5 
       kparts = ckey.split('^')
     end
+    if kparts[1]=="all_probes"
+      kparts[1]=""
+    end
+    if kparts[4].match(/\(.*\)/)
+      kparts[4] = kparts[4].split(/\(|\)/).last
+    end
 
     ret = { 
       :probe_id =>  kparts[1],
