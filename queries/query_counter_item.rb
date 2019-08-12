@@ -32,7 +32,7 @@ class CounterItemRequest < QueryBase
     end 
 
     return {
-      target:  ckey[:userlabel],
+      target:  "#{ckey[:userlabel]}(#{ckey[:meter]})",
       datapoints: datapoints
     }
   end
