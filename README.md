@@ -24,16 +24,21 @@ Restart grafana-server
 This is the small rack server to drive the Grafana JSON query interface.
 
 1. Download and unzip the latest release from https://github.com/trisulnsm/grafana-server/releases to the Web Trisul server 
-2. Set the ruby environment on the Web Trisul server
+2. Start the trisu-grafana server
+
+You can use the built in Ruby server stack on the Web Trisul server to start the server. 
+
    ````
    sudo -i 
    cd /usr/local/share/webtrisul
    source build/switch_local_ruby
    ````
-3. In that same session start the server (assume you want to run on port 3005 and bind to IP 192.168.2.99) 
+   In that same session start the server (assume you want to run on port 3005 and bind to IP 192.168.2.99) 
    ````
    rackup trisul-grafana-server.ru  -p 3005 -o 192.168.2.99                                                                                                         
    ````
+
+   You can also use your platforms  Ruby / Rack if you wish. The goal is to start the rackup server.
 
 
 ## Step 3: Configure the SimpleJSON datasource 
