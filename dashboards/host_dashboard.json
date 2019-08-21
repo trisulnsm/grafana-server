@@ -16,7 +16,7 @@
   "gnetId": null,
   "graphTooltip": 0,
   "id": 6,
-  "iteration": 1566400858514,
+  "iteration": 1566401855172,
   "links": [],
   "panels": [
     {
@@ -482,7 +482,6 @@
       {
         "allValue": null,
         "current": {
-          "selected": false,
           "text": "all_probes",
           "value": "all_probes"
         },
@@ -493,20 +492,9 @@
         "label": "Select Probe",
         "multi": false,
         "name": "probe",
-        "options": [
-          {
-            "selected": true,
-            "text": "all_probes",
-            "value": "all_probes"
-          },
-          {
-            "selected": false,
-            "text": "probe0",
-            "value": "probe0"
-          }
-        ],
+        "options": [],
         "query": "{\"find\": \"probes\", \"field\": \"@probe\"}",
-        "refresh": 0,
+        "refresh": 1,
         "regex": "",
         "skipUrlSync": false,
         "sort": 0,
@@ -518,8 +506,8 @@
       },
       {
         "current": {
-          "text": "25",
-          "value": "25"
+          "text": "10",
+          "value": "10"
         },
         "hide": 0,
         "label": "Maxitems",
@@ -558,5 +546,5 @@
   "timezone": "",
   "title": "Host Dashboard",
   "uid": "CyQuRbdWk",
-  "version": 29
+  "version": 30
 }
