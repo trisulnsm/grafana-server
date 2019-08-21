@@ -37,21 +37,22 @@ class TrisulGrafana
           return_data = CounterGroupInfoRequest.new(@zmq_endpoint).get_all_cgs()
         end
         if target["find"]=="meter"
-          return_data =  CounterGroupInfoRequest.new(@zmq_endpoint).get_meters_for_cgname(target["selected_cg"])
+          return_data =  CounterGroupInfoRequest.new(@zmq_endpoint).get_metersname_for_cgname(target["selected_cg"])
         end
       end
       [200, {"Content-Type" => "application/json"},  [  return_data.to_json() ]]
     when /query/
       query_data = JSON.parse(req.body.read)
       query_response = []
-
       query_data["targets"].collect do |t|
         if t["target"] =~ /toppers/ &&  t["type"] == "table" 
           query_response << CounterTopperRequest.new(@zmq_endpoint).do_query(query_data["range"],t["target"])
         elsif t["target"] =~ /toppers/ &&  t["type"] == "timeserie" 
           chartitems = CounterTopperHistoryRequest.new(@zmq_endpoint).do_query(query_data["range"],t["target"])
           chartitems.each { |d| query_response << d } 
-	elsif t["target"] 
+        elsif t["target"]=~/get_available_time/ && t["type"]=="table"
+          query_response << TimeSliesRequest.new(@zmq_endpoint).get_available_time()
+	       elsif t["target"] 
           chartitems = MultipleCounterItemRequest.new(@zmq_endpoint).do_query(query_data["range"],t["target"])
           chartitems.each { |d| query_response << d } 
         end

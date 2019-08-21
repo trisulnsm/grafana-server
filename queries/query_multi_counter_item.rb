@@ -14,8 +14,8 @@ class MultipleCounterItemRequest  < QueryBase
 
     return_data=[]
     items = composite_key_metric.split("/")
-    keys = items[3].split(",")
-    meters = items[4].split("|")
+    keys = items[3].split(",") #comma seperarted key
+    meters = items[4].split("|") #comma seperated item
     keys.each do | k|
       meters.each do |m|
         i = items.dup

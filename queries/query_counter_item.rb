@@ -21,17 +21,20 @@ class CounterItemRequest < QueryBase
              
 
     # multiplier Bps to bits-per-sec
-    multiplier =  ckey[:meter_units]=="Bps" ? 8:1
-
+    multiplier =  ckey[:meter_units]=="Bps" ? 8: 1
+    if(ckey[:extra_options] and ckey[:extra_options]["scale"]=="-1")
+       multiplier = -multiplier
+    end
     datapoints = []
-	TrisulRP::Protocol.get_response_zmq(@zmq_endpoint,req) do |resp|
+	 TrisulRP::Protocol.get_response_zmq(@zmq_endpoint,req) do |resp|
       ckey[:userlabel]=resp.key.label
       datapoints = resp.stats.collect  do |tsval|
-		[ tsval.values[ckey[:meter]]*multiplier , 1000*tsval.ts_tv_sec  ]
+        [tsval.values[ckey[:meter]]*multiplier , 1000*tsval.ts_tv_sec  ]
       end
     end 
 
     return {
+     # panels:[{},{},{yaxes:[{format:"bps"}]}],
       target:  "#{ckey[:userlabel]}(#{ckey[:meter]})",
       datapoints: datapoints
     }

@@ -15,13 +15,25 @@ class CounterGroupInfoRequest < QueryBase
     return all_cgs
   end
 
-  def get_meters_for_cgname(cgname)
+  def get_metersname_for_cgname(cgname)
     all_meters = {}
     req =mk_request(TRP::Message::Command::COUNTER_GROUP_INFO_REQUEST,
       :get_meter_info => true)
     TrisulRP::Protocol.get_response_zmq(@zmq_endpoint,req) do |resp|
       resp.group_details.select{|g| g.name==cgname}.first.meters.each do | meter|
         all_meters[meter.id] = "#{meter.description.strip}(#{meter.id})"
+      end
+    end
+    return all_meters
+  end
+
+  def get_meters_for_cgguid(cgguid)
+    all_meters = {}
+    req =mk_request(TRP::Message::Command::COUNTER_GROUP_INFO_REQUEST,
+      :get_meter_info => true)
+    TrisulRP::Protocol.get_response_zmq(@zmq_endpoint,req) do |resp|
+      resp.group_details.select{|g| g.guid==cgguid}.first.meters.each do | meter|
+        all_meters[meter.id] = meter
       end
     end
     return all_meters
