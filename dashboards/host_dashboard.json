@@ -16,7 +16,7 @@
   "gnetId": null,
   "graphTooltip": 0,
   "id": 6,
-  "iteration": 1566400045237,
+  "iteration": 1566400858514,
   "links": [],
   "panels": [
     {
@@ -62,7 +62,7 @@
         {
           "rawQuery": true,
           "refId": "A",
-          "target": "//agg/DIR_INTOHOME/0/",
+          "target": "/$probe/agg/DIR_INTOHOME/0/",
           "type": "timeserie"
         },
         {
@@ -155,7 +155,7 @@
         {
           "rawQuery": true,
           "refId": "A",
-          "target": "//Meta Session Group/{99A78737-4B41-4387-8F31-8077DB917336}/0",
+          "target": "/$probe/Meta Session Group/{99A78737-4B41-4387-8F31-8077DB917336}/0",
           "type": "timeserie"
         }
       ],
@@ -224,7 +224,7 @@
         {
           "rawQuery": true,
           "refId": "A",
-          "target": "//Internal Host/latest toppers($topcount)/0",
+          "target": "/$probe/Internal Host/latest toppers($topcount)/0",
           "type": "table"
         }
       ],
@@ -258,7 +258,7 @@
         {
           "rawQuery": true,
           "refId": "A",
-          "target": "//External Host/latest toppers($topcount)/0",
+          "target": "/$probe/External Host/latest toppers($topcount)/0",
           "type": "table"
         }
       ],
@@ -292,7 +292,7 @@
         {
           "rawQuery": true,
           "refId": "A",
-          "target": "//Internal Host/latest toppers($topcount)/1",
+          "target": "/$probe/Internal Host/latest toppers($topcount)/1",
           "type": "table"
         }
       ],
@@ -326,7 +326,7 @@
         {
           "rawQuery": true,
           "refId": "A",
-          "target": "//External Host/latest toppers($topcount)/1",
+          "target": "/$probe/External Host/latest toppers($topcount)/1",
           "type": "table"
         }
       ],
@@ -360,7 +360,7 @@
         {
           "rawQuery": true,
           "refId": "A",
-          "target": "//Internal Host/latest toppers($topcount)/2",
+          "target": "/$probe/Internal Host/latest toppers($topcount)/2",
           "type": "table"
         }
       ],
@@ -394,7 +394,7 @@
         {
           "rawQuery": true,
           "refId": "A",
-          "target": "//External Host/latest toppers($topcount)/2",
+          "target": "/$probe/External Host/latest toppers($topcount)/2",
           "type": "table"
         }
       ],
@@ -428,7 +428,7 @@
         {
           "rawQuery": true,
           "refId": "A",
-          "target": "//Internal Host/latest toppers($topcount)/4",
+          "target": "/$probe/Internal Host/latest toppers($topcount)/4",
           "type": "table"
         }
       ],
@@ -462,7 +462,7 @@
         {
           "rawQuery": true,
           "refId": "A",
-          "target": "//External Host/latest toppers($topcount)/4",
+          "target": "/$probe/External Host/latest toppers($topcount)/4",
           "type": "table"
         }
       ],
@@ -480,6 +480,43 @@
   "templating": {
     "list": [
       {
+        "allValue": null,
+        "current": {
+          "selected": false,
+          "text": "all_probes",
+          "value": "all_probes"
+        },
+        "datasource": "SimpleJson",
+        "definition": "{\"find\": \"probes\", \"field\": \"@probe\"}",
+        "hide": 0,
+        "includeAll": false,
+        "label": "Select Probe",
+        "multi": false,
+        "name": "probe",
+        "options": [
+          {
+            "selected": true,
+            "text": "all_probes",
+            "value": "all_probes"
+          },
+          {
+            "selected": false,
+            "text": "probe0",
+            "value": "probe0"
+          }
+        ],
+        "query": "{\"find\": \"probes\", \"field\": \"@probe\"}",
+        "refresh": 0,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 0,
+        "tagValuesQuery": "",
+        "tags": [],
+        "tagsQuery": "",
+        "type": "query",
+        "useTags": false
+      },
+      {
         "current": {
           "text": "25",
           "value": "25"
@@ -489,8 +526,9 @@
         "name": "topcount",
         "options": [
           {
-            "text": "25",
-            "value": "25"
+            "selected": false,
+            "text": "10",
+            "value": "10"
           }
         ],
         "query": "25",
@@ -500,7 +538,7 @@
     ]
   },
   "time": {
-    "from": "now-7d",
+    "from": "now-6h",
     "to": "now"
   },
   "timepicker": {
@@ -520,5 +558,5 @@
   "timezone": "",
   "title": "Host Dashboard",
   "uid": "CyQuRbdWk",
-  "version": 24
+  "version": 29
 }
