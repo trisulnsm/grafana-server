@@ -44,7 +44,7 @@ class QueryBase
 
     get_response_zmq(@zmq_endpoint,req) do |resp|
           resp.group_details
-              .sort{ |a,b| b.name.length <=> a.name.length}
+              .sort{ |a,b| a.name.length <=> b.name.length}
               .each do |g|
                   if g.name.downcase.start_with?(kparts[2].downcase)
                     ret[:counter_group]=g.guid
@@ -54,6 +54,7 @@ class QueryBase
                     ret[:meter_units]=g.meters[ ret[:meter]].units
                     ret[:meter_type]=g.meters[ ret[:meter]].type
                     ret[:meter_desc]=g.meters[ ret[:meter]].description
+                    break
                   end
           end
     end

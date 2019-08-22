@@ -28,7 +28,8 @@ class CounterTopperRequest  < QueryBase
 			 :time_interval =>  mk_time_interval( [Time.parse(range["from"]),  Time.parse(range["to"])] ),
        :meter => ckey[:meter],
        :maxitems =>topcount,
-       :resolve_keys => true)
+       :resolve_keys => true,
+       :probe_id => ckey[:probe_id])
 
 
     rows = [] 
@@ -41,16 +42,25 @@ class CounterTopperRequest  < QueryBase
                   key.metric * multiplier,] 
       end
     end
-    rows = rows.sort{|x,y| y[3]<=>x[3]}.slice(0,topcount.to_i)
+    rows = rows.sort_by(&:last).reverse.slice(0,topcount.to_i)
 
-    return {
-      columns:    [  {"text":"Item",  "type": "string"}  , 
-                     {"text":"Label", "type": "string"}  ,
-                     {"text":"#{ckey[:meter_desc]}", "type": "string"},
-                     {"text":"Raw #{ckey[:meter_desc]}", "type": "string"} ],
-      rows: rows,
-      type: "table"
-    }
+    if(ckey[:extra_options] and ckey[:extra_options]["surface"]=="pie")
+      return rows.collect do | r |
+        {
+          target:r[1],
+          datapoints:[[r[3],Time.parse(range["to"]).tv_sec*1000]]
+        }
+      end
+    else
+      return {
+        columns:    [  {"text":"Item",  "type": "string"}  , 
+                       {"text":"Label", "type": "string"}  ,
+                       {"text":"#{ckey[:meter_desc]}", "type": "string"},
+                       {"text":"Raw #{ckey[:meter_desc]}", "type": "string"} ],
+        rows: rows,
+        type: "table"
+      }
+    end
   end
 
 end

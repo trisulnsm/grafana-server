@@ -9,9 +9,14 @@ class CounterTopperHistoryRequest  < QueryBase
 
     ckey = parse_composite_key( composite_key_metric)
 
+
+
     # get toppers 
     toppers = CounterTopperRequest.new(@zmq_endpoint).do_query(range, composite_key_metric)
 
+    if(ckey[:extra_options] and ckey[:extra_options]["surface"]=="pie")
+     return toppers
+    end
     toppers[:rows].collect do | row |
       ckey[:key] = row[0]
       itemkey = "/#{ckey[:probe_id]}/#{ckey[:counter_group_name]}/#{ckey[:key]}/#{ckey[:meter]}"

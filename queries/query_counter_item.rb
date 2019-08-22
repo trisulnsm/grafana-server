@@ -12,7 +12,7 @@ class CounterItemRequest < QueryBase
     ckey = parse_composite_key( composite_key_metric)
     ckey[:userlabel] = ckey[:key] 
 
-	req =TrisulRP::Protocol.mk_request(TRP::Message::Command::COUNTER_ITEM_REQUEST,
+	  req =TrisulRP::Protocol.mk_request(TRP::Message::Command::COUNTER_ITEM_REQUEST,
 			 :counter_group => ckey[:counter_group],
 			 :key => ckey[:key],
 			 :time_interval =>  mk_time_interval( [Time.parse(range["from"]),  Time.parse(range["to"])] ),
@@ -26,7 +26,7 @@ class CounterItemRequest < QueryBase
        multiplier = -multiplier
     end
     datapoints = []
-	 TrisulRP::Protocol.get_response_zmq(@zmq_endpoint,req) do |resp|
+	  TrisulRP::Protocol.get_response_zmq(@zmq_endpoint,req) do |resp|
       ckey[:userlabel]=resp.key.label
       datapoints = resp.stats.collect  do |tsval|
         [tsval.values[ckey[:meter]]*multiplier , 1000*tsval.ts_tv_sec  ]
