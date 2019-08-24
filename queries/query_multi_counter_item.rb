@@ -12,8 +12,13 @@ class MultipleCounterItemRequest  < QueryBase
       p "Using a standard metric to #{composite_key_metric}"
     end
 
+
+   
     return_data=[]
     items = composite_key_metric.split("/")
+    if items[2].downcase == "counters"
+      items.delete_at(2)
+    end
     keys = items[3].split(",") #comma seperarted key
     meters = items[4].split("|") #comma seperated item
     keys.each do | k|

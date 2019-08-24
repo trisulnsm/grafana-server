@@ -59,6 +59,15 @@ class ModelUtils
   def self.fmt_bw(val,units="bps")
     fmt_prefix_10(val) + units.to_s.downcase
   end
+  
+  def self.fmt_ts(tvsec,opts={})
+    if opts[:show_time]==false
+      return Time.at(tvsec.to_i).strftime("%F")
+    else
+      return Time.at(tvsec.to_i).strftime("%F %T")
+    end
+   end
+
 
 
 end

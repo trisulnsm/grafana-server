@@ -30,14 +30,15 @@ class TrisulGrafana
       target_data = qp["target"]
       if target_data.length > 0 and (JSON.parse(target_data) rescue nil)
         target = JSON.parse(target_data) 
-        if target["find"]=="probes"
-          return_data = ContextConfigRequest.new(TRISUL_DOMAIN_SOCKET).get_all_probes(TRISUL_HUB,TRISUL_CONTEXT)
-        end
-        if target["find"]=="cgguid"
-          return_data = CounterGroupInfoRequest.new(@zmq_endpoint).get_all_cgs()
-        end
-        if target["find"]=="meter"
-          return_data =  CounterGroupInfoRequest.new(@zmq_endpoint).get_metersname_for_cgname(target["selected_cg"])
+        case target["find"]
+          when "probes"
+            return_data = ContextConfigRequest.new(TRISUL_DOMAIN_SOCKET).get_all_probes(TRISUL_HUB,TRISUL_CONTEXT)
+          when "alertgroups"
+            return_data = ["IDS","Badfellas"]
+          when "cgguid"
+            return_data = CounterGroupInfoRequest.new(@zmq_endpoint).get_all_cgs()
+          when "meter"
+            return_data =  CounterGroupInfoRequest.new(@zmq_endpoint).get_metersname_for_cgname(target["selected_cg"])
         end
       end
       [200, {"Content-Type" => "application/json"},  [  return_data.to_json() ]]
@@ -46,10 +47,12 @@ class TrisulGrafana
       query_response = []
       query_data["targets"].collect do |t|
         if t["target"] =~ /toppers/ &&  t["type"] == "table" 
-          query_response << CounterTopperRequest.new(@zmq_endpoint).do_query(query_data["range"],t["target"])
+          query_response = CounterTopperRequest.new(@zmq_endpoint).do_query(query_data["range"],t["target"])
         elsif t["target"] =~ /toppers/ &&  t["type"] == "timeserie" 
           chartitems = CounterTopperHistoryRequest.new(@zmq_endpoint).do_query(query_data["range"],t["target"])
           chartitems.each { |d| query_response << d } 
+        elsif  t["target"] =~/\/alerts\// && t["type"] == "table"
+          query_response = QueryAlertsRequest.new(@zmq_endpoint).do_query(query_data["range"],t["target"],query_data["adhocFilters"])
         elsif t["target"]=~/get_available_time/ && t["type"]=="table"
           query_response << TimeSliesRequest.new(@zmq_endpoint).get_available_time()
 	       elsif t["target"] 
@@ -60,6 +63,26 @@ class TrisulGrafana
       [200, {"Content-Type" => "application/json"}, [query_response.to_json()] ]
     when /annotations/
       [200, {"Content-Type" => "text/html"}, ["Hello World!"]]
+    when /tag-keys/
+      resp = [
+        {"type":"text","text":"Priority"},
+        {"type":"text","text":"Source IP"},
+        {"type":"text","text":"Source Port"},
+        {"type":"text","text":"Destination IP"},
+        {"type":"text","text":"Destination Port"}
+      ]
+     [200, {"Content-Type" => "application/json"}, [resp.to_json()] ]
+   when /tag-values/
+      resp = []
+      query_data = JSON.parse(req.body.read)
+      if query_data["key"] == "Priority"
+        resp = [
+          {"text":"1"},
+          {"text":"2"},
+          {"text":"3"}
+        ]
+      end
+     [200, {"Content-Type" => "application/json"}, [resp.to_json()] ]
     else
       [404, {"Content-Type" => "text/html"}, ["I'm Lost!"]]
     end

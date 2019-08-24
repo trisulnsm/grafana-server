@@ -44,23 +44,23 @@ class CounterTopperRequest  < QueryBase
     end
     rows = rows.sort_by(&:last).reverse.slice(0,topcount.to_i)
 
-    if(ckey[:extra_options] and ckey[:extra_options]["surface"]=="pie")
-      return rows.collect do | r |
+    #for total toppers return total value in timeserires
+    if composite_key_metric.match(/total.*toppers/)
+      return rows.collect do |r|
         {
           target:r[1],
-          datapoints:[[r[3],Time.parse(range["to"]).tv_sec*1000]]
+          datapoints:[[r.last,Time.parse(range["to"]).tv_sec*1000]]
         }
       end
-    else
-      return {
-        columns:    [  {"text":"Item",  "type": "string"}  , 
-                       {"text":"Label", "type": "string"}  ,
-                       {"text":"#{ckey[:meter_desc]}", "type": "string"},
-                       {"text":"Raw #{ckey[:meter_desc]}", "type": "string"} ],
-        rows: rows,
-        type: "table"
-      }
     end
+    return[{
+      columns:    [  {"text":"Item",  "type": "string"}  , 
+                     {"text":"Label", "type": "string"}  ,
+                     {"text":"#{ckey[:meter_desc]}", "type": "string"},
+                     {"text":"Raw #{ckey[:meter_desc]}", "type": "string"} ],
+      rows: rows,
+      type: "table"
+    }]
   end
 
 end
