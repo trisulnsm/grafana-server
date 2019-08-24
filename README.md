@@ -6,7 +6,6 @@ A very simple JSON server to show Trisul Metrics in a Grafana Dashboard
 
 The *trisul-grafana-server* is a very simple and fast server that allows to you show Trisul Network Analytics time series graphs in Grafana.
 
-
  1. Uses the simple-json-server Grafana Datasource
  2. *Has no authentication* at the moment.  Use with caution on internal network. We will be adding auth soon.
 
@@ -17,9 +16,7 @@ Follow the instructions in https://github.com/grafana/simple-json-datasource?utm
 
 Restart grafana-server
 
-
 ## Step 2: Start the Trisul Grafana server 
-
 
 This is the small rack server to drive the Grafana JSON query interface.
 
@@ -87,6 +84,5 @@ Create a new dashboard , then start adding Trisul Metrics as shown below. Just e
 Here is a sample dashboard
 
 ![sample](sample.png)
-
 
 
