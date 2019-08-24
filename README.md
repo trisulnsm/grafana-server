@@ -72,6 +72,14 @@ So you would do `//apps/http/0`
 * Create a _timeserie_  query , then use the _//apps/toppers(5)/0_  format
 
 
+#### How to get lastest toppers into a table
+* You can put latest toppers from any counter group in a table by using the special key _latest toppers_. such as _/probe0/apps/latest toppers(10)/0_
+
+#### How to get total value for toppers into a pie chart
+
+* You can use a special key _total toppers_ such as _/probe0/apps/total toppers(10)/0
+
+
 ### Start adding queries to  dashboards 
 
 Create a new dashboard , then start adding Trisul Metrics as shown below. Just enter the strings directly 
