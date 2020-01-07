@@ -64,20 +64,25 @@ So you would do `//apps/http/0`
 
 #### How to get Toppers into a table
 
-* You can put toppers from any counter group in a table by using the special key _toppers_  You can add a _table_ in Grafana such as _/probe0/apps/toppers(5)/0_ This gets the top 5 applications of meter 0 (Total bandwidth) into a table
+* You can put toppers from any counter group in a table by using the special key _toppers_  You can add a _table_ in Grafana such as *`/probe0/apps/toppers(5)/0`* This gets the top 5 applications of meter 0 (Total bandwidth) into a table
 
 #### How to get Topper history timeseries into a chart 
 
 * Sometimes you want to see the timeseries for a bunch of toppers. 
-* Create a _timeserie_  query , then use the _//apps/toppers(5)/0_  format
+* Create a _timeserie_  query , then use the *`//apps/toppers(5)/0'*  format
 
 
 #### How to get lastest toppers into a table
-* You can put latest toppers from any counter group in a table by using the special key _latest toppers_. such as _/probe0/apps/latest toppers(10)/0_
+* You can put latest toppers from any counter group in a table by using the special key _latest toppers_. such as *`/probe0/apps/latest toppers(10)/0`*
 
 #### How to get total value for toppers into a pie chart
 
-* You can use a special key _total toppers_ such as _/probe0/apps/total toppers(10)/0
+* You can use a special key _total toppers_ such as *`/probe0/apps/total toppers(10)/0`*
+
+
+#### How to get alerts into a table ####
+
+* You can put alerts from IDS,Badfellas into a table by using the special key _alerts_. You can add a _table_ in Grafana such as *`//alerts/badfellas/list(10)/`* This gets the top 10 blacklisted alerts into a tbale
 
 
 ### Start adding queries to  dashboards 
