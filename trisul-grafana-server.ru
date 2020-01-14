@@ -4,13 +4,10 @@ require 'json'
 require 'trisulrp'
 require_relative  'queries/queries.rb'
 
-TRISUL_DOMAIN_SOCKET="ipc:///usr/local/var/lib/trisul-hub/domain0/run/ctl_local_req"
+TRISUL_DOMAIN_SOCKET="ipc:///usr/local/var/lib/trisul-hub/domain0/run/ctl_local_req.hub0"
 TRISUL_HUB="hub0"
 TRISUL_CONTEXT="default"
 
-
-# for testing
-#TRISUL_DOMAIN_SOCKET="ipc:///home/vivek/bldart/th3/trisul_hub/stg/var/lib/trisul-hub/domain0/run/ctl_local_req"
 
 # the server 
 class TrisulGrafana
